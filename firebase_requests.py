@@ -1,7 +1,9 @@
 import json
 
-from gjo_requests import request_forecasts, request_resolutions
+import streamlit as st
 from google.cloud import firestore
+
+from gjo_requests import request_forecasts, request_resolutions
 
 firestore_info = json.loads(st.secrets["firestore_info"])
 credentials = service_account.Credentials.from_service_account_info(firestore_info)
