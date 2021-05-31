@@ -32,69 +32,74 @@ if __name__ == "__main__":
     uid = st.number_input("What is your user ID?", min_value=1, value=28899)
     uid = str(uid)
 
-    curl_value = ""
-
+    curl_value = """curl 'https://www.gjopen.com/' \\
+  -H 'authority: www.gjopen.com' \\
+  -H '...: ...'"""
     curl_command = st.text_area(
-        "Ugh... Gimme your cURL info...", value=curl_value.strip()
+        "Ugh... Gimme your cURL info...", value=curl_value
     )
-    curl_content = uncurl.parse_context(curl_command)
-    headers, cookies = curl_content.headers, curl_content.cookies
+    curl_command = "".join(curl_command.split("\\\n"))
+    
+    if curl_command != curl_value:
 
-    # ---
+        curl_content = uncurl.parse_context(curl_command)
+        headers, cookies = curl_content.headers, curl_content.cookies
 
-    questions = get_resolved_questions(uid, platform_url, headers, cookies)
+        # ---
 
-    st.write(f"{len(questions)} questions you forecasted on have resolved.")
+        questions = get_resolved_questions(uid, platform_url, headers, cookies)
 
-    # ---
-    # TODO: Make a progress bar..?
+        st.write(f"{len(questions)} questions you forecasted on have resolved.")
 
-    forecasts = get_forecasts(uid, questions, platform_url, headers, cookies)
-    resolutions = get_resolutions(questions, platform_url, headers, cookies)
+        # ---
+        # TODO: Make a progress bar..?
 
-    # ---
+        forecasts = get_forecasts(uid, questions, platform_url, headers, cookies)
+        resolutions = get_resolutions(questions, platform_url, headers, cookies)
 
-    num_forecasts = sum(len(f) for f in forecasts.values())
-    st.write(
-        f"On these {len(questions)} questions you've made {num_forecasts} forecasts."
-    )
+        # ---
 
-    flatten = lambda t: [item for sublist in t for item in sublist]
-    y_true = flatten(resolutions[q]["y_true"] for q in questions for _ in forecasts[q])
-    y_pred = flatten(f["y_pred"] for q in questions for f in forecasts[q])
-
-    # Note that I am "double counting" each prediction.
-    if st.checkbox("Drop last"):
-        y_true = flatten(
-            resolutions[q]["y_true"][:-1] for q in questions for _ in forecasts[q]
+        num_forecasts = sum(len(f) for f in forecasts.values())
+        st.write(
+            f"On these {len(questions)} questions you've made {num_forecasts} forecasts."
         )
-        y_pred = flatten(f["y_pred"][:-1] for q in questions for f in forecasts[q])
 
-    y_true, y_pred = np.array(y_true), np.array(y_pred)
+        flatten = lambda t: [item for sublist in t for item in sublist]
+        y_true = flatten(resolutions[q]["y_true"] for q in questions for _ in forecasts[q])
+        y_pred = flatten(f["y_pred"] for q in questions for f in forecasts[q])
 
-    st.write(f"Which gives us {len(y_pred)} datapoints to work with.")
+        # Note that I am "double counting" each prediction.
+        if st.checkbox("Drop last"):
+            y_true = flatten(
+                resolutions[q]["y_true"][:-1] for q in questions for _ in forecasts[q]
+            )
+            y_pred = flatten(f["y_pred"][:-1] for q in questions for f in forecasts[q])
 
-    # ---
+        y_true, y_pred = np.array(y_true), np.array(y_pred)
 
-    strategy = st.selectbox(
-        "Which binning stranegy do you prefer?",
-        ["uniform", "quantile"],
-    )
+        st.write(f"Which gives us {len(y_pred)} datapoints to work with.")
 
-    recommended_n_bins = int(np.sqrt(len(y_pred))) if strategy == "quantile" else 20 + 1
-    n_bins = st.number_input(
-        "How many bins do you want me to display?",
-        min_value=1,
-        value=recommended_n_bins,
-    )
+        # ---
 
-    fig = plotly_calibration(y_true, y_pred, n_bins=n_bins, strategy=strategy)
-    st.plotly_chart(fig, use_container_width=True)
+        strategy = st.selectbox(
+            "Which binning stranegy do you prefer?",
+            ["uniform", "quantile"],
+        )
 
-    overconf = overconfidence(y_true, y_pred)
-    st.write(f"Your over/under- confidence score is {overconf:.2f}.")
+        recommended_n_bins = int(np.sqrt(len(y_pred))) if strategy == "quantile" else 20 + 1
+        n_bins = st.number_input(
+            "How many bins do you want me to display?",
+            min_value=1,
+            value=recommended_n_bins,
+        )
 
-    # ---
+        fig = plotly_calibration(y_true, y_pred, n_bins=n_bins, strategy=strategy)
+        st.plotly_chart(fig, use_container_width=True)
 
-    fig = plotly_calibration_odds(y_true, y_pred, n_bins=n_bins, strategy=strategy)
-    st.plotly_chart(fig, use_container_width=True)
+        overconf = overconfidence(y_true, y_pred)
+        st.write(f"Your over/under- confidence score is {overconf:.2f}.")
+
+        # ---
+
+        fig = plotly_calibration_odds(y_true, y_pred, n_bins=n_bins, strategy=strategy)
+        st.plotly_chart(fig, use_container_width=True)
