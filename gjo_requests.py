@@ -65,7 +65,7 @@ async def get_question_resolution(qid, platform_url, session):
             y_true = tuple(len(tr.findAll("i")) for tr in tables[0].findAll("tr")[1:])
 
         logging.info(
-            f"[X] get_question_resolution for uid={uid}, platform_url={platform_url}"
+            f"[X] get_question_resolution for qid={qid}, platform_url={platform_url}"
         )
         return {"y_true": y_true}
 
