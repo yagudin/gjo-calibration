@@ -9,7 +9,7 @@ from plotting import plotly_calibration, plotly_calibration_odds
 
 if __name__ == "__main__":
 
-    st.title("Learn how calibrated are you?")
+    st.title("How calibrated are you?")
 
     # ---
 
@@ -34,7 +34,20 @@ if __name__ == "__main__":
 
     curl_value = """curl 'https://www.gjopen.com/' \\
   -H 'authority: www.gjopen.com' \\
-  -H '...: ...'"""
+  -H 'cache-control: max-age=0' \\
+  -H 'sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"' \\
+  -H 'sec-ch-ua-mobile: ?0' \\
+  -H 'dnt: 1' \\
+  -H 'upgrade-insecure-requests: 1' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36' \
+  -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+  -H 'sec-fetch-site: none' \\
+  -H 'sec-fetch-mode: navigate' \\
+  -H 'sec-fetch-user: ?1' \\
+  -H 'sec-fetch-dest: document' \
+  -H 'accept-language: en-US,en;q=0.9,ru;q=0.8' \\
+  -H 'cookie: a-very-long-mysterious-string' \\
+  --compressed"""
     curl_command = st.text_area(
         "Ugh... Gimme your cURL info...", value=curl_value
     )
