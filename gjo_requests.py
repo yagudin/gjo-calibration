@@ -40,7 +40,7 @@ def get_resolved_questions(uid, platform_url, headers, cookies):
 
 async def get_question_resolution(qid, platform_url, session):
     logging.info(
-        f"[ ] get_question_resolution for uid={uid}, platform_url={platform_url}"
+        f"[ ] get_question_resolution for qid={qid}, platform_url={platform_url}"
     )
 
     url = f"{platform_url}/questions/{qid}"
