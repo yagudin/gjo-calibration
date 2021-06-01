@@ -35,6 +35,8 @@ if __name__ == "__main__":
         4. Right click on the first request, which loads the "questions" document. Click Copy, then "copy as cURL". Paste the results here.
     """)
 
+    st.sidebar.write("Nuno Sempere made [a video instructions](https://www.youtube.com/watch?v=_G3FNzYNPCs) for an earlier version of the web app.")
+
     # st.sidebar.subheader("On plots and methodology")
 
     # st.sidebar.write("""
@@ -84,7 +86,7 @@ if __name__ == "__main__":
     )
     
     if curl_command == curl_value:
-        st.warning('Please input your cURL (see the sidebar for the instructions :-) ')
+        st.warning('Please input your cURL (see the sidebar for the instructions :-)')
         st.stop()
 
     try:
