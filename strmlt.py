@@ -35,7 +35,7 @@ if __name__ == "__main__":
         4. Right click on the first request, which loads the "questions" document. Click Copy, then "copy as cURL". Paste the results here.
     """)
 
-    st.sidebar.write("Nuno Sempere made [a video instructions](https://www.youtube.com/watch?v=_G3FNzYNPCs) for an earlier version of the web app.")
+    st.sidebar.write("Nuno Sempere made [video instructions](https://www.youtube.com/watch?v=_G3FNzYNPCs) for an earlier version of the web app.")
 
     # st.sidebar.subheader("On plots and methodology")
 
@@ -82,7 +82,7 @@ if __name__ == "__main__":
   -H 'cookie: a-very-long-mysterious-string' \\
   --compressed"""
     curl_command = st.text_area(
-        "Om Nom Nom Nom... Paste cURL here, if confued see the sidebar for the instructions.", value=curl_value
+        "Om Nom Nom Nom... Paste cURL here, if confused see the sidebar for the instructions.", value=curl_value
     )
     
     if curl_command == curl_value:
