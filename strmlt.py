@@ -19,14 +19,14 @@ if __name__ == "__main__":
     st.sidebar.write("Good calibration is vital for good judgemental forecasting. "
              "When a calibrated forecaster predicts 70% on 10 quesions, we actually expect "
              "around 7 of these to resolve positively. Unfortunately, there is "
-             "no easy way to see which fractoin of our 70% forecasts resolves "
-             "positively on Good Judgement Open. Hence I made this web app.")
+             "no easy way to see which fraction of our 70% forecasts resolves "
+             "positively on Good Judgement Open. I hence made this web app.")
 
     st.sidebar.subheader("On cURL")
 
     st.sidebar.write("I use your cookies for gathering information from GJO: which questions did you forecast on; what did you forecast on; how did they resolve.")
 
-    st.sidebar.write("I do not use them for other purposes, neither I store them. The code is on [github](https://github.com/yagudin/gjo-calibration).")
+    st.sidebar.write("I do not use them for other purposes, neither do I store them. The code is on [github](https://github.com/yagudin/gjo-calibration).")
 
     st.sidebar.write("""
         1. Go to e.g [gjopen.com/questions](gjopen.com/questions) in a new tab in Chrome or in Firefox.
@@ -35,7 +35,7 @@ if __name__ == "__main__":
         4. Right click on the first request, which loads the "questions" document. Click Copy, then "copy as cURL". Paste the results here.
     """)
 
-    st.sidebar.write("Nuno Sempere made [a video instructions](https://www.youtube.com/watch?v=_G3FNzYNPCs) for an earlier version of the web app.")
+    st.sidebar.write("Nuño Sempere made [video instructions](https://www.youtube.com/watch?v=_G3FNzYNPCs) for an earlier version of the web app.")
 
     # st.sidebar.subheader("On plots and methodology")
 
@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     st.sidebar.subheader("Authorship and acknowledgments")
 
-    st.sidebar.write("This web app was built by [Misha Yagudin](mailto:mike.yagudin@gmail.com). I am grateful to [Nuño Sempere](https://nunosempere.github.io/) for providing feedback. All errors are mine.")
+    st.sidebar.write("This web app was built by [Misha Yagudin](mailto:mike.yagudin@gmail.com). I am grateful to [Nuño Sempere](https://nunosempere.github.io/) for providing feedback. All errors are my own.")
 
     # ---
 
@@ -82,7 +82,7 @@ if __name__ == "__main__":
   -H 'cookie: a-very-long-mysterious-string' \\
   --compressed"""
     curl_command = st.text_area(
-        "Om Nom Nom Nom... Paste cURL here, if confued see the sidebar for the instructions.", value=curl_value
+        "Om Nom Nom Nom... Paste cURL here, if confused see the sidebar for the instructions.", value=curl_value
     )
     
     if curl_command == curl_value:
