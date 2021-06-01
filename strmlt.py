@@ -17,10 +17,10 @@ if __name__ == "__main__":
     st.sidebar.header("Welcome!")
 
     st.sidebar.write("Good calibration is vital for good judgemental forecasting. "
-             "When a calibrated forecaster predicts 70% on 10 quesions, we actually expect "
+             "When a calibrated forecaster predicts 70% on 10 questions, we actually expect "
              "around 7 of these to resolve positively. Unfortunately, there is "
              "no easy way to see which fraction of our 70% forecasts resolves "
-             "positively on Good Judgement Open. I hence made this web app.")
+             "positively on Good Judgement Open. Hence, I made this web app.")
 
     st.sidebar.subheader("On cURL")
 
@@ -31,8 +31,8 @@ if __name__ == "__main__":
     st.sidebar.write("""
         1. Go to e.g [gjopen.com/questions](gjopen.com/questions) in a new tab in Chrome or in Firefox.
         2. Press `Ctrl + Shift + I`, and then navigate to the "Network" tab. 
-        3. Click on “Reload”, or reload the page.
-        4. Right click on the first request, which loads the "questions" document. Click Copy, then "copy as cURL". Paste the results here.
+        3. Click on “Reload” or reload the page.
+        4. Right click on the first request which loads the "questions" document. Click Copy, then "copy as cURL". Paste the results here.
     """)
 
     st.sidebar.write("Nuño Sempere made [video instructions](https://www.youtube.com/watch?v=_G3FNzYNPCs) for an earlier version of the web app.")
@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     st.sidebar.subheader("Authorship and acknowledgments")
 
-    st.sidebar.write("This web app was built by [Misha Yagudin](mailto:mike.yagudin@gmail.com). I am grateful to [Nuño Sempere](https://nunosempere.github.io/) for providing feedback. All errors are my own.")
+    st.sidebar.write("This web app was built by [Misha Yagudin](https://twitter.com/mishayagudin). I am grateful to [Nuño Sempere](https://nunosempere.github.io/) for providing feedback.")
 
     # ---
 
@@ -171,3 +171,5 @@ if __name__ == "__main__":
 
     # overconf = overconfidence(y_true, y_pred)
     # st.write(f"Your over/under- confidence score is {overconf:.2f}.")
+
+    # get_resolutions(list(range(, platform_url, headers, cookies)
