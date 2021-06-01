@@ -13,12 +13,42 @@ if __name__ == "__main__":
 
     # ---
 
-    # if st.checkbox('I am new! Show me instructions.'):
-    #     st.write("""
-    #         Hey!
-    #     """)
+    st.sidebar.header("Welcome!")
+
+    st.sidebar.write("Good calibration is vital for good judgemental forecasting. "
+             "When a calibrated forecaster predicts 70% on 10 quesions, we actually expect "
+             "around 7 of these to resolve positively. Unfortunately, there is "
+             "no easy way to see which fractoin of our 70% forecasts resolves "
+             "positively on Good Judgement Open. Hence I made this web app.")
+
+    st.sidebar.subheader("On cURL")
+
+    st.sidebar.write("I use your cookies for gathering information from GJO: which questions did you forecast on; what did you forecast on; how did they resolve.")
+
+    st.sidebar.write("I do not use them for other purposes, neither I store them. The code is on [github](https://github.com/yagudin/gjo-calibration).")
+
+    st.sidebar.write("""
+        1. Go to e.g [gjopen.com/questions](gjopen.com/questions) in a new tab in Chrome or in Firefox.
+        2. Press `Ctrl + Shift + I`, and then navigate to the "Network" tab. 
+        3. Click on “Reload”, or reload the page.
+        4. Right click on the first request, which loads the "questions" document. Click Copy, then "copy as cURL". Paste the results here.
+    """)
+
+    # st.sidebar.subheader("On plots and methodology")
+
+    # st.sidebar.write("""
+    #     - I generate two calibration curves: one in linear space and another one in 'odds' space (hopefully it will be easier to see how well calibrated you are around probabilities close to 0 and 1).
+    #     - I generate plots with a modified [sklearn.calibration.calibration_curve](https://scikit-learn.org/stable/modules/generated/sklearn.calibration.calibration_curve.html), basically it groups points into bins and computes the proportions of samples resolving positively and the mean predicted probabilities.
+    #     - The confidence intervals are a standart deviations wide.
+    #     - If you hover over a datapoint you can see precise coordinates (x, y) and number of samples (N) contributing to it.
+    # """)
+
+    st.sidebar.subheader("Authorship and acknowledgments")
+
+    st.sidebar.write("This web app was built by [Misha Yagudin](mailto:mike.yagudin@gmail.com). I am grateful to [Nuño Sempere](https://nunosempere.github.io/) for providing feedback. All errors are mine.")
 
     # ---
+
 
     platform = st.selectbox(
         "Which platform are you using?",
