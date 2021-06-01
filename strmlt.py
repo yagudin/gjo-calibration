@@ -35,7 +35,7 @@ if __name__ == "__main__":
         4. Right click on the first request, which loads the "questions" document. Click Copy, then "copy as cURL". Paste the results here.
     """)
 
-    st.sidebar.write("Nuno Sempere made [a video instructions](https://www.youtube.com/watch?v=_G3FNzYNPCs) for an earlier version of the web app.")
+    st.sidebar.write("Nuno Sempere made [video instructions](https://www.youtube.com/watch?v=_G3FNzYNPCs) for an earlier version of the web app.")
 
     # st.sidebar.subheader("On plots and methodology")
 
