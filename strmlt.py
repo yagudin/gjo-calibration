@@ -65,58 +65,68 @@ if __name__ == "__main__":
     curl_value = """curl 'https://www.gjopen.com/' \\
   -H 'authority: www.gjopen.com' \\
   -H 'cache-control: max-age=0' \\
-  -H 'sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"' \\
+  -H 'sec-ch-ua: "something-something-about-your-browser"' \\
   -H 'sec-ch-ua-mobile: ?0' \\
   -H 'dnt: 1' \\
   -H 'upgrade-insecure-requests: 1' \
-  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36' \
-  -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+  -H 'user-agent: Mozilla/5.0 something-something-about-your-PC' \
+  -H 'accept: text/html...' \
   -H 'sec-fetch-site: none' \\
   -H 'sec-fetch-mode: navigate' \\
   -H 'sec-fetch-user: ?1' \\
-  -H 'sec-fetch-dest: document' \
+  -H 'sec-fetch-dest: document' \\
   -H 'accept-language: en-US,en;q=0.9,ru;q=0.8' \\
   -H 'cookie: a-very-long-mysterious-string' \\
   --compressed"""
     curl_command = st.text_area(
-        "Ugh... Gimme your cURL info...", value=curl_value
+        "Om Nom Nom Nom... Paste cURL here, if confued see the sidebar for the instrucitons.", value=curl_value
     )
-    curl_command = "".join(curl_command.split("\\\n"))
     
-    if curl_command != curl_value:
+    if curl_command == curl_value:
+        st.warning('Please input your cURL (see the sidebar for instrucitons :-) ')
+        st.stop()
 
+    try:
+        curl_command = curl_command.replace("\\", "")
         curl_content = uncurl.parse_context(curl_command)
         headers, cookies = curl_content.headers, curl_content.cookies
+    except SystemExit:
+        st.warning("It seems like something is wrong with the cURL you provided: see the sidebar for the instrucitons.")
+        st.stop()
 
-        # ---
+    # ---
 
+    with st.spinner('Loading resolved questions...'):
         questions = get_resolved_questions(uid, platform_url, headers, cookies)
 
-        st.write(f"{len(questions)} questions you forecasted on have resolved.")
+    st.write(f"- {len(questions)} questions you forecasted on have resolved.")
 
-        # ---
-        # TODO: Make a progress bar..?
+    # ---
+    # TODO: Make a progress bar..?
 
+    with st.spinner('Loading your forecasts...'):
         forecasts = get_forecasts(uid, questions, platform_url, headers, cookies)
+    
+    with st.spinner("Loading questions's resolutions..."):
         resolutions = get_resolutions(questions, platform_url, headers, cookies)
 
-        # ---
+    # ---
 
-        num_forecasts = sum(len(f) for f in forecasts.values())
-        st.write(
-            f"On these {len(questions)} questions you've made {num_forecasts} forecasts."
-        )
+    num_forecasts = sum(len(f) for f in forecasts.values())
+    st.write(
+        f"- You've made {num_forecasts} forecasts on these {len(questions)} questions."
+    )
 
-        flatten = lambda t: [item for sublist in t for item in sublist]
-        y_true = flatten(resolutions[q]["y_true"] for q in questions for _ in forecasts[q])
-        y_pred = flatten(f["y_pred"] for q in questions for f in forecasts[q])
+    flatten = lambda t: [item for sublist in t for item in sublist]
+    # y_true = flatten(resolutions[q]["y_true"] for q in questions for _ in forecasts[q])
+    # y_pred = flatten(f["y_pred"] for q in questions for f in forecasts[q])
 
-        # Note that I am "double counting" each prediction.
-        if st.checkbox("Drop last"):
-            y_true = flatten(
-                resolutions[q]["y_true"][:-1] for q in questions for _ in forecasts[q]
-            )
-            y_pred = flatten(f["y_pred"][:-1] for q in questions for f in forecasts[q])
+    # Note that I am "double counting" each prediction.
+    # if st.checkbox("Drop last"):
+    y_true = flatten(
+        resolutions[q]["y_true"][:-1] for q in questions for _ in forecasts[q]
+    )
+    y_pred = flatten(f["y_pred"][:-1] for q in questions for f in forecasts[q])
 
     y_true, y_pred = np.array(y_true), np.array(y_pred)
 
@@ -124,27 +134,37 @@ if __name__ == "__main__":
     np.random.default_rng(0).shuffle(order)
     y_true, y_pred = y_true[order], y_pred[order]
 
-        # ---
 
-        strategy = st.selectbox(
-            "Which binning stranegy do you prefer?",
-            ["uniform", "quantile"],
-        )
+    st.write(f"- Which gives us {len(y_pred)} datapoints to work with.")
 
-        recommended_n_bins = int(np.sqrt(len(y_pred))) if strategy == "quantile" else 20 + 1
-        n_bins = st.number_input(
-            "How many bins do you want me to display?",
-            min_value=1,
-            value=recommended_n_bins,
-        )
+    # ---
 
-        fig = plotly_calibration(y_true, y_pred, n_bins=n_bins, strategy=strategy)
-        st.plotly_chart(fig, use_container_width=True)
+    strategy_select = st.selectbox(
+        "Which binning stranegy do you prefer?",
+        [
+            "I want bins to have identical widths",
+            "I want bins to have the same number of samples",
+        ],
+    )
+    strategy = {
+        "I want bins to have identical widths": "uniform",
+        "I want bins to have the same number of samples": "quantile",
+    }[strategy_select]
 
-        overconf = overconfidence(y_true, y_pred)
-        st.write(f"Your over/under- confidence score is {overconf:.2f}.")
+    recommended_n_bins = int(np.sqrt(len(y_pred))) if strategy == "quantile" else 20 + 1
+    n_bins = st.number_input(
+        "How many bins do you want me to display?",
+        min_value=1,
+        value=recommended_n_bins,
+    )
 
-        # ---
+    # ---
 
-        fig = plotly_calibration_odds(y_true, y_pred, n_bins=n_bins, strategy=strategy)
-        st.plotly_chart(fig, use_container_width=True)
+    fig = plotly_calibration(y_true, y_pred, n_bins=n_bins, strategy=strategy)
+    st.plotly_chart(fig, use_container_width=True)
+
+    fig = plotly_calibration_odds(y_true, y_pred, n_bins=n_bins, strategy=strategy)
+    st.plotly_chart(fig, use_container_width=True)
+
+    # overconf = overconfidence(y_true, y_pred)
+    # st.write(f"Your over/under- confidence score is {overconf:.2f}.")
