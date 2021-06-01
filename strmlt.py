@@ -7,6 +7,7 @@ from firebase_requests import get_forecasts, get_resolutions
 from gjo_requests import get_resolved_questions
 from plotting import plotly_calibration, plotly_calibration_odds
 
+
 if __name__ == "__main__":
     st.set_page_config(page_title="How calibrated are you?", page_icon="🦊")
     st.title("🦊 How calibrated are you?")
@@ -79,11 +80,11 @@ if __name__ == "__main__":
   -H 'cookie: a-very-long-mysterious-string' \\
   --compressed"""
     curl_command = st.text_area(
-        "Om Nom Nom Nom... Paste cURL here, if confued see the sidebar for the instrucitons.", value=curl_value
+        "Om Nom Nom Nom... Paste cURL here, if confued see the sidebar for the instructions.", value=curl_value
     )
     
     if curl_command == curl_value:
-        st.warning('Please input your cURL (see the sidebar for instrucitons :-) ')
+        st.warning('Please input your cURL (see the sidebar for instructions :-) ')
         st.stop()
 
     try:
@@ -91,7 +92,7 @@ if __name__ == "__main__":
         curl_content = uncurl.parse_context(curl_command)
         headers, cookies = curl_content.headers, curl_content.cookies
     except SystemExit:
-        st.warning("It seems like something is wrong with the cURL you provided: see the sidebar for the instrucitons.")
+        st.warning("It seems like something is wrong with the cURL you provided: see the sidebar for the instructions.")
         st.stop()
 
     # ---
