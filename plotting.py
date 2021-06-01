@@ -73,6 +73,14 @@ def plotly_calibration(y_true, y_pred, n_bins, strategy="quantile"):
     return fig
 
 
+def transform(x):
+    """
+    e.g. 66.6% → 2^{1} : 1 → 1
+    """
+    x = np.clip(x, 1e-3, 1-1e-3) # used when computing error bars close to 0 or 1.
+    return np.log2(1 / (1 - x) - 1)
+    
+
 def plotly_calibration_odds(y_true, y_pred, n_bins, strategy="quantile"):
     y_pred = np.clip(y_pred, 0.005, 0.995)  # clipping to avoid undefined odds
     y_true = np.clip(y_true, 1e-3, 1 - 1e-3)
@@ -82,8 +90,6 @@ def plotly_calibration_odds(y_true, y_pred, n_bins, strategy="quantile"):
     error_y = np.sqrt((fraction_of_positives) * (1 - fraction_of_positives) / counts)
 
     fig = go.Figure()
-
-    transform = lambda x: np.log2(1 / (1 - x) - 1)  # 66.6% → 2^{1}:1 → 1
 
     customdata = np.dstack(
         [
