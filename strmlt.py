@@ -8,8 +8,8 @@ from gjo_requests import get_resolved_questions
 from plotting import plotly_calibration, plotly_calibration_odds
 
 if __name__ == "__main__":
-
-    st.title("How calibrated are you?")
+    st.set_page_config(page_title="How calibrated are you?", page_icon="🦊")
+    st.title("🦊 How calibrated are you?")
 
     # ---
 
