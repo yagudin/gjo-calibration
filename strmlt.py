@@ -84,7 +84,7 @@ if __name__ == "__main__":
     )
     
     if curl_command == curl_value:
-        st.warning('Please input your cURL (see the sidebar for instructions :-) ')
+        st.warning('Please input your cURL (see the sidebar for the instructions :-) ')
         st.stop()
 
     try:
