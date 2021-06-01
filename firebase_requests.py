@@ -25,7 +25,7 @@ def get_forecasts(uid, questions, platform_url, headers, cookies):
             db.collection("users").add({}, uid)
         db.collection("users").document(uid).update(missing_forecasts)
 
-    return {**db_forecasts, **missing_forecasts}
+    return {key: value for key, value in {**db_forecasts, **missing_forecasts}.items() if key in questions}
 
 
 def get_resolutions(questions, platform_url, headers, cookies):
