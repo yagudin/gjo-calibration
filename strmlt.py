@@ -29,7 +29,7 @@ if __name__ == "__main__":
     st.sidebar.write("I do not use them for other purposes, neither do I store them. The code is on [github](https://github.com/yagudin/gjo-calibration).")
 
     st.sidebar.write("""
-        1. Go to e.g [gjopen.com/questions](gjopen.com/questions) in a new tab in Chrome or in Firefox.
+        1. Go to e.g [gjopen.com/questions](https://www.gjopen.com/questions) in a new tab in Chrome or in Firefox.
         2. Press `Ctrl + Shift + I`, and then navigate to the "Network" tab. 
         3. Click on “Reload” or reload the page.
         4. Right click on the first request which loads the "questions" document. Click Copy, then "copy as cURL". Paste the results here.
