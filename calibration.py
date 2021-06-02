@@ -27,9 +27,6 @@ def calibration_curve(y_true, y_prob, *, n_bins=5, strategy="uniform"):
 
     try:
         binids = np.digitize(y_prob, bins) - 1
-
-        raise ValueError
-
     except Exception as e:
         np.set_printoptions(threshold=sys.maxsize)
         logging.info("=" * 40)
