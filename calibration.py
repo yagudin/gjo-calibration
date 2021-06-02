@@ -1,3 +1,4 @@
+import logging
 import numpy as np
 
 
@@ -20,7 +21,18 @@ def calibration_curve(y_true, y_prob, *, n_bins=5, strategy="uniform"):
             "must be either 'quantile' or 'uniform'."
         )
 
-    binids = np.digitize(y_prob, bins) - 1
+    try:
+        binids = np.digitize(y_prob, bins) - 1
+    except Exception as e:
+        np.set_printoptions(threshold=sys.maxsize)
+        logging.info("=" * 40)
+        logging.info(f"n_bins={n_bins}, strategy={strategy}")
+        logging.info(f"y_true={repr(y_prob)}")
+        logging.info(f"bins={repr(bins)}")
+        logging.info("=" * 40)
+
+        raise e
+
 
     bin_sums = np.bincount(binids, weights=y_prob, minlength=len(bins))
     bin_true = np.bincount(binids, weights=y_true, minlength=len(bins))

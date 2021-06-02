@@ -165,24 +165,14 @@ if __name__ == "__main__":
 
     # ---
 
-    for strategy in ['uniform', 'quantile']:
-        for n_bins in range(1, 300):
-            try:
-                fig = plotly_calibration(y_true, y_pred, n_bins=n_bins, strategy=strategy)
-                # st.plotly_chart(fig, use_container_width=True)
+    try:
+        fig = plotly_calibration(y_true, y_pred, n_bins=n_bins, strategy=strategy)
+        st.plotly_chart(fig, use_container_width=True)
 
-                fig = plotly_calibration_odds(y_true, y_pred, n_bins=n_bins, strategy=strategy)
-                # st.plotly_chart(fig, use_container_width=True)
-                
-            except:
-                st.warning("Hey! Unfortunately, there occured a mysterious error, which I haven't been able to reproduce locally. Try refreshing the page or changing the number of bins a bit. <3")
-
-                np.set_printoptions(threshold=sys.maxsize)
-                logging.info("=" * 40)
-                logging.info(f"n_bins={n_bins}, strategy={strategy}")
-                logging.info(f"true={repr(y_true)}")
-                logging.info(f"y_pred={repr(y_pred)}")
-                logging.info("=" * 40)
+        fig = plotly_calibration_odds(y_true, y_pred, n_bins=n_bins, strategy=strategy)
+        st.plotly_chart(fig, use_container_width=True)
+    except Exception as e:
+        st.warning("Hey! Unfortunately, a very mysterious error occured. Try refreshing the page or changing the number of bins a bit.")
 
     # overconf = overconfidence(y_true, y_pred)
     # st.write(f"Your over/under- confidence score is {overconf:.2f}.")
