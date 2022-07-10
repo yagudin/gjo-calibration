@@ -86,7 +86,7 @@ def _extract_forecasts_from_page(page):
     looking_for_a_forecast = True
     for line in page.split("\n"):
         if looking_for_a_forecast:
-            hit = re.findall("made a forecast", line)
+            hit = re.findall("made their \d+(st|nd|rd|th) forecast", line)
             if hit:
                 looking_for_a_forecast = False
 
